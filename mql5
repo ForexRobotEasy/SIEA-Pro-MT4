@@ -1,0 +1,70 @@
+mql5
+//+------------------------------------------------------------------+
+//|                                               SIEA Pro MT4       |
+//|                                                      forexroboteasy.com |
+//|                                       Developed by Forex Robot Easy Team |
+//+------------------------------------------------------------------+
+
+// Include necessary libraries and define global variables
+#include <Trade/Trade.mqh>
+#include <Trade/PositionInfo.mqh>
+#include <Trade/AccountInfo.mqh>
+
+CTrade trade;
+CPositionInfo position;
+CAccountInfo account;
+
+// Define the main function for the trading robot
+void OnTick()
+{
+    // Check if the trading robot is enabled
+    if (!IsExpertEnabled())
+        return;
+
+    // Get the list of pairs to trade from user preferences
+    string[] pairsToTrade = GetPairsToTrade();
+
+    // Loop through all pairs
+    for (int i = 0; i < ArraySize(pairsToTrade); i++)
+    {
+        // Calculate the trading volume for the current pair
+        double volume = CalculateVolume(pairsToTrade[i]);
+
+        // Check if there is a reverse entry opportunity for the current pair
+        if (IsReverseEntryOpportunity(pairsToTrade[i]))
+        {
+            // Open a position with the calculated volume
+            trade.Buy(pairsToTrade[i], volume);
+            
+            // Print the trade details to the console
+            Print('Buy order placed for pair: ', pairsToTrade[i]);
+            Print('Volume: ', volume);
+        }
+    }
+}
+
+// Function to get the list of pairs to trade from user preferences
+string[] GetPairsToTrade()
+{
+    // TODO: Implement user preferences retrieval logic
+    string[] pairs = {'EURUSD', 'GBPUSD', 'USDJPY', 'USDCHF', 'AUDUSD', 'NZDUSD', 'USDCAD', 'EURJPY', 'EURGBP'};
+    return pairs;
+}
+
+// Function to calculate the trading volume for a given pair
+double CalculateVolume(string pair)
+{
+    // TODO: Implement trading volume calculation logic based on account balance and risk-reward ratio
+    double balance = account.Balance();
+    double volume = balance * 0.01; // Example: 1% of account balance
+    return volume;
+}
+
+// Function to identify reverse entry opportunities for a given pair
+bool IsReverseEntryOpportunity(string pair)
+{
+    // TODO: Implement market analysis logic to identify reverse entry opportunities
+    return true; // Example: Always return true for demonstration purposes
+}
+
+//+------------------------------------------------------------------+
